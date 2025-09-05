@@ -48,12 +48,7 @@ const Home = () => {
             Manage agencies, customers, cars, and sales — all in one powerful
             dashboard.
           </p>
-          <Link
-            to="/login"
-            className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300"
-          >
-            Get Started
-          </Link>
+          
         </motion.div>
 
         {/* Background car image */}

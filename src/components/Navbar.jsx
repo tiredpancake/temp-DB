@@ -123,9 +123,9 @@ const Navbar = () => {
             ></span>
             
             {/* Menu indicator */}
-            <div className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-              <span className="text-xs font-bold text-white">!</span>
-            </div>
+            {/* <div className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+              {/* <span className="text-xs font-bold text-white"></span> */}
+            {/* </div> */}
           </button>
         </div>
 
