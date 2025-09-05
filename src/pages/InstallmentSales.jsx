@@ -60,7 +60,7 @@ const InstallmentSales = () => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
-    }).format(amount || 0);
+    }).format((amount || 0) / 100);
   };
 
   const calculateMonthlyPayment = (carPrice, interestRate, months = 60) => {
