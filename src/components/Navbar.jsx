@@ -1,9 +1,40 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logoImage from "../assets/logo-image.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [stats, setStats] = useState([
+    { label: "Total Cars", value: "-", icon: "🚗" },
+    { label: "Active Sales", value: "-", icon: "📊" },
+    { label: "Customers", value: "-", icon: "👥" },
+  ]);
+
+  useEffect(() => {
+      const fetchStats = async () => {
+        try {
+          const [carsRes, customersRes, salesRes] = await Promise.all([
+            fetch("http://localhost:4000/api/cars"),
+            fetch("http://localhost:4000/api/customers"),
+            fetch("http://localhost:4000/api/sellingplans"), // or overbooksales/installmentsales as needed
+          ]);
+  
+          const cars = await carsRes.json();
+          const customers = await customersRes.json();
+          const sales = await salesRes.json();
+  
+          setStats([
+            { label: "Total Cars", value: cars.length, icon: "🚗" },
+            { label: "Active Sales", value: sales.length, icon: "📊" },
+            { label: "Customers", value: customers.length, icon: "👥" },
+          ]);
+        } catch (err) {
+          console.error("Failed to fetch stats:", err);
+        }
+      };
+  
+      fetchStats();
+    }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -35,11 +66,11 @@ const Navbar = () => {
   ];
 
   // Stats for header
-  const stats = [
-    { label: "Total Cars", value: "1,234", icon: "🚗" },
-    { label: "Active Sales", value: "89", icon: "📊" },
-    { label: "Customers", value: "456", icon: "👥" },
-  ];
+  // const stats = [
+  //   { label: "Total Cars", value: "1,234", icon: "🚗" },
+  //   { label: "Active Sales", value: "89", icon: "📊" },
+  //   { label: "Customers", value: "456", icon: "👥" },
+  // ];
 
   return (
     <nav className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white shadow-2xl backdrop-blur-sm border-b border-white/10">
