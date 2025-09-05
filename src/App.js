@@ -13,6 +13,7 @@ import Loans from "./pages/Loans.jsx";
 import Contracts from "./pages/Contracts.jsx";
 import Participates from "./pages/Participates.jsx";
 import Have from "./pages/Have.jsx";
+import Login from "./Login.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/have" element={<Have />} />
        
         <Route path="/loans" element={<Loans />} />
+         <Route path="/login" element={<Login />} />
         
         
         
