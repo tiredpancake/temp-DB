@@ -1,45 +1,13 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import logoImage from "../assets/logo-image.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [stats, setStats] = useState([
-    { label: "Total Cars", value: "-", icon: "🚗" },
-    { label: "Active Sales", value: "-", icon: "📊" },
-    { label: "Customers", value: "-", icon: "👥" },
-  ]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  // Fetch stats from backend
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const [carsRes, customersRes, salesRes] = await Promise.all([
-          fetch("http://localhost:4000/api/cars"),
-          fetch("http://localhost:4000/api/customers"),
-          fetch("http://localhost:4000/api/sellingplans"), // or overbooksales/installmentsales as needed
-        ]);
-
-        const cars = await carsRes.json();
-        const customers = await customersRes.json();
-        const sales = await salesRes.json();
-
-        setStats([
-          { label: "Total Cars", value: cars.length, icon: "🚗" },
-          { label: "Active Sales", value: sales.length, icon: "📊" },
-          { label: "Customers", value: customers.length, icon: "👥" },
-        ]);
-      } catch (err) {
-        console.error("Failed to fetch stats:", err);
-      }
-    };
-
-    fetchStats();
-  }, []);
 
   // Quick access navigation for header
   const quickAccessLinks = [
@@ -66,6 +34,13 @@ const Navbar = () => {
     { to: "/have", label: "Inventory", icon: "✅", description: "Stock management" },
   ];
 
+  // Stats for header
+  const stats = [
+    { label: "Total Cars", value: "1,234", icon: "🚗" },
+    { label: "Active Sales", value: "89", icon: "📊" },
+    { label: "Customers", value: "456", icon: "👥" },
+  ];
+
   return (
     <nav className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white shadow-2xl backdrop-blur-sm border-b border-white/10">
       <div className="container mx-auto px-4 py-4">
@@ -73,9 +48,9 @@ const Navbar = () => {
           {/* Logo and Brand */}
           <div className="flex items-center space-x-4 group">
             <div className="relative">
-              <img
-                src={logoImage}
-                alt="SellingCar Logo"
+              <img 
+                src={logoImage} 
+                alt="SellingCar Logo" 
                 className="h-14 w-14 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-lg"></div>
@@ -117,7 +92,9 @@ const Navbar = () => {
                   <span className="text-lg group-hover:scale-110 transition-transform duration-300">
                     {link.icon}
                   </span>
-                  <span className="font-semibold text-white">{link.label}</span>
+                  <span className="font-semibold text-white">
+                    {link.label}
+                  </span>
                 </span>
               </Link>
             ))}
@@ -152,7 +129,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Stats */}
+        {/* Mobile Stats - Only visible on mobile */}
         <div className="lg:hidden mt-4 flex justify-center space-x-6">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
@@ -165,7 +142,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Dropdown Menu */}
+        {/* Enhanced Dropdown Menu */}
         <div
           className={`transition-all duration-700 ease-in-out ${
             isMenuOpen
@@ -173,7 +150,8 @@ const Navbar = () => {
               : "max-h-0 opacity-0 overflow-hidden transform -translate-y-8"
           }`}
         >
-          <div className="bg-gradient-to-br from-slate-800/90 via-blue-900/90 to-slate-800/90 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
+          <div className="bg-gradient-to-br from-slate-800/90 via-blue-900/90 to-slate-800/90 backdrop-blur-xl rounded-3xl p-6 border border-white/20 shadow-2xl">
+            {/* Menu Header */}
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-2">
                 Navigation Center
@@ -181,33 +159,44 @@ const Navbar = () => {
               <p className="text-blue-300">Access all features and manage your car business</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {/* Navigation Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
               {fullNavigationLinks.map((link, index) => (
                 <Link
                   key={link.to}
-                  className="group relative flex flex-col items-center p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 hover:from-white/20 hover:to-white/30 transition-all duration-500 hover:scale-105 hover:shadow-2xl border border-white/10 hover:border-yellow-400/50"
+                  className="group relative flex flex-col items-center p-3 rounded-xl bg-gradient-to-br from-white/5 to-white/10 hover:from-white/20 hover:to-white/30 transition-all duration-500 hover:scale-105 hover:shadow-2xl border border-white/10 hover:border-yellow-400/50"
                   to={link.to}
                   onClick={() => setIsMenuOpen(false)}
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{
+                    animationDelay: `${index * 50}ms`,
+                  }}
                 >
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">
                     {link.icon}
                   </div>
-                  <h3 className="font-bold text-lg text-center group-hover:text-yellow-300 transition-colors duration-300 mb-2">
+                  <h3 className="font-bold text-sm text-center group-hover:text-yellow-300 transition-colors duration-300 mb-1">
                     {link.label}
                   </h3>
-                  <p className="text-xs text-blue-300 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-xs text-blue-300 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 leading-tight">
                     {link.description}
                   </p>
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-orange-400/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  
+                  {/* Hover effect overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-orange-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  {/* Arrow indicator */}
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
                 </Link>
               ))}
             </div>
+            
+            {/* Menu Footer */}
+
+            
           </div>
         </div>
       </div>
